@@ -28,11 +28,6 @@ object Day10a:
         case _            => throw new IllegalArgumentException(s"Bad line: $line")
     }
 
-    // @tailrec
-    // def run(lines: Iterator[String], hist: Queue[Int], set: Option[Int]): Queue[Int] =
-
-
-
   val input = """addx 15
 addx -11
 addx 6
