@@ -28,21 +28,11 @@ object Day12a:
       (0 until hline.length).map(x => Cell(Pos(x, y), heights(y)(x))).toVector
     }
 
-    val potentialEndPoints: Vector[(Int, Vector[Pos])] = chooseEndPoints(cells)
-    println(potentialEndPoints)
-
-    val path = potentialEndPoints.foldLeft(Option.empty[Vector[Pos]]) { case (pathOpt, (height, posList)) =>
-      pathOpt orElse {
-        println(s"***** Searching for points with height $height...")
-        val paths = posList.map(pos => findShortest(cells, startPos, pos))
-        val best = paths.filter(_.nonEmpty).sortBy(_.length)
-        best.headOption
-      }
-    }
-    
-    path match
-      case Some(res)  => println(s"Found route with ${res.length} steps to ${res.last}.\n$path")
-      case None       => println(s"No path.")
+    findShortest(cells, startPos, endPos) match
+      case vect if vect.nonEmpty =>
+        println(s"Found route with ${vect.length} steps to ${vect.last}.")
+        println(vect)
+      case _ => println(s"No path.")
     
   end main
 

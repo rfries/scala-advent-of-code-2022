@@ -97,19 +97,13 @@ object Day12b:
                 if npath.pos == endPos then
                   // Found it!
                   found = cur.fullPath :+ npath.pos
-                  //println(s">> Found endPos from $cur")
-
+                  
                 else if cost < npath.cost then
                   // the cost through us to the neighbor is lower than the neighbor's cost, so
                   // update them to go through us
-
                   updatePath(toVisit, npath, cur, cost)
 
-                else
-                  if npath.cost == Double.PositiveInfinity then println(s">> ***** skipping neighbor in toVisit with Inf cost: $npath")
-                  //println(s">> neighbor in toVisit and not updated: $npath")
               case None =>
-                //println(s">> neighbor $neighbor already visited")
                 // neighbor already visited
           }
         }
