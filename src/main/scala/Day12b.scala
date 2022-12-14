@@ -6,7 +6,7 @@ import scala.math.Ordering.Reverse
 import scala.collection.mutable.Queue
 import scala.collection.mutable
 
-object Day12a:
+object Day12b:
 
   def main(args: Array[String]): Unit =
     //val lines = Source.fromString(input).getLines().toVector
@@ -29,17 +29,17 @@ object Day12a:
     }
 
     val potentialEndPoints: Vector[(Int, Vector[Pos])] = chooseEndPoints(cells)
-    println(potentialEndPoints)
-
-    val path = potentialEndPoints.foldLeft(Option.empty[Vector[Pos]]) { case (pathOpt, (height, posList)) =>
-      pathOpt orElse {
-        println(s"***** Searching for points with height $height...")
-        val paths = posList.map(pos => findShortest(cells, startPos, pos))
-        val best = paths.filter(_.nonEmpty).sortBy(_.length)
-        best.headOption
-      }
+    val starts = potentialEndPoints.find((height, _) => height == 0)
+    println(s"Number of starts: ${starts.get._2.length}")
+    val path = starts.foldLeft(Option.empty[Vector[Pos]]) {
+      case (pathOpt, (height, posList)) =>
+        pathOpt orElse {
+          val paths = posList.map(pos => findShortest(cells, pos, endPos))
+          val best = paths.filter(_.nonEmpty).sortBy(_.length)
+          best.headOption
+        }
     }
-    
+   
     path match
       case Some(res)  => println(s"Found route with ${res.length} steps to ${res.last}.\n$path")
       case None       => println(s"No path.")
@@ -69,7 +69,7 @@ object Day12a:
     val toVisit: PriorityQueue[Path] = PriorityQueue.empty(Path.ord_Path)
     //val visited: Queue[(Pos, Double)] = Queue.empty
 
-    print(s">> searching for ${endPos}...")
+    print(s">> searching for route from $startPos to $endPos...")
 
     toVisit.addAll(
       cells.flatten.map(cell =>
@@ -113,14 +113,7 @@ object Day12a:
                 // neighbor already visited
           }
         }
-      // else
-      //   println(">> no path, skipping...")
-        // println(s">> done processing $cur, (already dequeued)")
-        // removePath(toVisit, cur)
     }
-    // println(s"Visited ${visited.length} Paths, ${visited.distinct.length} distinct")
-    // val visCost = visited.filter((_, cost) => cost != Double.PositiveInfinity)
-    // println(s"Visited ${visCost.length} Paths with routes, ${visCost.distinct.length} distinct")
     println(s"path len ${found.length}")
     found
   end findShortest
@@ -206,4 +199,4 @@ accszExk
 acctuvwj
 abdefghi"""
 
-end Day12a
+end Day12b
